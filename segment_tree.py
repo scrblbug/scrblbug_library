@@ -59,32 +59,24 @@ class Segment_Tree:
         if left >= right:
             return self.ie
         
-        # 1(tree全体を含むもの)から探索開始。キューには探索対象の深さも一緒に入れておく
-        # 遅い……(TT
+        # 左端と右端から上位を見ていく
         result = self.ie
-        queue = [(1, 0)]
-        while len(queue) > 0:
-            node, node_depth = queue.pop()
+        left = left + self.offset
+        right = right + self.offset - 1
 
-            # 対象ノードが受け持つ区間を求める
-            width = 2 ** (self.depth - node_depth)
-            idx_in_row = node - 2 ** (node_depth)
-            node_left = width * idx_in_row
-            node_right = node_left + width
+        # 左端と右端が重なるとこまで演算
+        while left <= right:
+            # 左端は、自身が親の右側の子の時(=ノード番号が奇数のとき)にだけ演算する
+            if left % 2 == 1:
+                result = self.op(result, self.tree[left])
+            # 一段上に移動
+            left = (left + 1) // 2
 
-            # 範囲外なら探索終了
-            if node_right <= left or right <= node_left:
-                continue
-
-            # はみ出てたら子をキューに追加
-            if node_left < left or right < node_right:
-                queue.append((node * 2, node_depth + 1))
-                queue.append((node * 2 + 1, node_depth + 1))
-                continue
-
-            # ここまで来たのならノードの情報は探索範囲に包含されている
-            result = self.op(result, self.tree[node])
-        
+            # 右端は、自身が親の左側の(以下略
+            if right % 2 == 0:
+                result = self.op(result, self.tree[right])
+            right = (right - 1) // 2
+       
         return result
     
     # データ領域の値をindexに応じて返す
