@@ -2,10 +2,10 @@
 import math
 
 # セグメント木のクラス
-# 後日遅延評価なども取り入れていきたいが、とりあえず
-# 基本的なところだけを分かりやすい形で組んでみたもの
-# length:データ部の長さ depth:構造全体の深さ
-# offset:上位構造の長さ tree:全体リスト
+# とりあえず基本的なところだけを分かりやすい形で組んでみたもの
+# length:データ部の長さ offset:上位構造の長さ tree:全体リスト
+# コンストラクタ (arg1, op, ie) arg1=初期要素or初期要素数 op=演算内容 ie=単位元
+# .set(index, value) .find(left, right) で大体できるはず
 
 class Segment_Tree:
     # コンストラクタ。リストもしくは要素数にて初期化。
@@ -22,12 +22,8 @@ class Segment_Tree:
             default_list = list(arg1)
             self.length = len(arg1)
 
-        # 全体の深さ、上位構造分のオフセットを求める
-        self.depth = 0
-        self.offset = 1
-        while self.offset < self.length:
-            self.depth += 1
-            self.offset *= 2
+        # 上位構造分のオフセットを求める
+        self.offset = 2 ** ((self.length - 1).bit_length())
 
         # 木の初期化。構造は1-indexedで使用していくことにする
         self.tree = [self.ie] * (self.offset * 2)
@@ -35,7 +31,7 @@ class Segment_Tree:
             self.tree[self.offset:self.offset+self.length] = default_list
             self.refresh()
 
-    # 全体の再計算(愚直に……)
+    # 全体の再計算(愚直に下から……)
     def refresh(self):
         for idx in range(self.offset - 1, 0, -1):
             self.tree[idx] = self.op(self.tree[idx*2], self.tree[idx*2+1])
