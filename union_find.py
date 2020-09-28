@@ -1,6 +1,12 @@
 # Union_Findクラス
+# 書いた人: scrblbug
+# サイトURL: http://miaoued.net Twitter: @scrblbug
 # なんにせよ分かりやすさ重視で……
 # parent:親要素管理リスト rank:木の高さ管理リスト
+# コンストラクタ(N):要素数NのUnion_Find木を作成
+# .find(x):最上位の親（グループリーダー）を探す
+# .unite(x, y):xとyのグループを統合する
+# .samep(x, y):xとyが同じグループかどうかを判定
 
 class Union_Find:
     # コンストラクタ。親管理リストと高さ管理リストを初期化し、
@@ -39,7 +45,7 @@ class Union_Find:
             self.parent[x] = y
     
     # xとyが同じグループかどうかを調べる
-    def same(self, x, y):
+    def samep(self, x, y):
         return self.find(x) == self.find(y)
     
     # 全てのグループの人数を辞書形式で返す

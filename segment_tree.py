@@ -2,10 +2,13 @@
 import math
 
 # セグメント木のクラス
+# 書いた人：scrblbug
+# サイトURL: http://miaoued.net Twitter: @scrblbug
 # とりあえず基本的なところだけを分かりやすい形で組んでみたもの
 # length:データ部の長さ offset:上位構造の長さ tree:全体リスト
-# コンストラクタ (arg1, op, ie) arg1=初期要素or初期要素数 op=演算内容 ie=単位元
-# .set(index, value) .find(left, right) で大体できるはず
+# コンストラクタ (arg1, op, ie):arg1=初期要素or初期要素数
+#       op=演算内容（初期値min的動作） ie=単位元（初期値math.inf）
+# .set(index, value) .rangeq(left, right)範囲指定は半開放 で大体のことはできるはず
 
 class Segment_Tree:
     # コンストラクタ。リストもしくは要素数にて初期化。
@@ -22,10 +25,10 @@ class Segment_Tree:
             default_list = list(arg1)
             self.length = len(arg1)
 
-        # 上位構造分のオフセットを求める
+        # 上位構造分の配列個数（オフセット）を求める
         self.offset = 2 ** ((self.length - 1).bit_length())
 
-        # 木の初期化。構造は1-indexedで使用していくことにする
+        # 木の初期化。上位構造は1-indexedで使用していくことにする
         self.tree = [self.ie] * (self.offset * 2)
         if default_list:
             self.tree[self.offset:self.offset+self.length] = default_list
@@ -50,8 +53,9 @@ class Segment_Tree:
                 self.tree[idx] = new
         
     # 半開区間[left, right)における欲しい値(アレっすよ、アレ)を求める
-    def find(self, left, right):
-        # 区間がおかしなときは、エラー代わりに単位元とかでも返しておく
+    # 一番下の階層からボトムアップ的に必要な部分を見ていく
+    def rangeq(self, left, right):
+        # 区間がおかしなときは、エラー代わりに単位元でも返しておく
         if left >= right:
             return self.ie
         
@@ -61,6 +65,7 @@ class Segment_Tree:
         right = right + self.offset - 1
 
         # 左端と右端が重なるとこまで演算
+        # ちょうど重なったところでも、下記の条件分けから一度しか演算されない
         while left <= right:
             # 左端は、自身が親の右側の子の時(=ノード番号が奇数のとき)にだけ演算する
             if left % 2 == 1:
@@ -69,6 +74,7 @@ class Segment_Tree:
             left = (left + 1) // 2
 
             # 右端は、自身が親の左側の(以下略
+            # C++だとみんな半開放の値を生かして--rightとかエレガントに書いてるけど……
             if right % 2 == 0:
                 result = self.op(result, self.tree[right])
             right = (right - 1) // 2
@@ -80,9 +86,9 @@ class Segment_Tree:
         return self.tree[x+self.offset]
 
     # 全領域を対象にした計算値を返す
-    def find_all(self):
+    def allq(self):
         return self.tree[1]
     
     # 保持している値全体を返す（デバッグ用？）
     def show_tree(self):
-        print(self.tree)
+        return self.tree
