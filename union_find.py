@@ -2,57 +2,84 @@
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 # なんにせよ分かりやすさ重視で……
-# parent:親要素管理リスト rank:木の高さ管理リスト
 # コンストラクタ(N):要素数NのUnion_Find木を作成
-# .find(x):最上位の親（グループリーダー）を探す
+# parent:親要素管理リスト
+# rank:木の高さ管理リスト
+# group_count:現在のグループ数
+# N:全体の要素数
+# .find(x):最上位の親（グループリーダー）を取得
 # .unite(x, y):xとyのグループを統合する
 # .samep(x, y):xとyが同じグループかどうかを判定
+# .get_group_member_list(x):xの所属するグループのメンバーをリストで取得
+# .get_group_member_count(x):xの所属するグループのメンバー数を取得
+# .get_all_groups():全てのリーダー:グループメンバー数を辞書形式で取得
 
 class Union_Find:
     # コンストラクタ。親管理リストと高さ管理リストを初期化し、
-    # 要素N個のUnion-Find木を作る
+    # 要素N個のUnion-Find森を作成する。
+    # 親管理リストは、基本的には自分のひとつ上の親を表すが、
+    # 値が負の場合には、自身が最上位の親（リーダー）であることを表し、
+    # 自分を含めたグループの人数を管理することとする
     def __init__(self, N):
-        self.parent = [i for i in range(N)]
+        self.parent = [-1] * N
         self.rank = [0] * N
+        self.group_count = N
+        self.N = N
     
-    # 最上位の親を探す
+    # xの所属するグループのリーダーを返す
     def find(self, x):
-        # 自分自身が親なら、自分を返す
-        if x == self.parent[x]:
+        # 自分自身がリーダーなら、自分を返す
+        if self.parent[x] < 0:
             return x
 
         # 再帰的に捜索し、見つかれば繋ぎ変えておく
-        # (面倒くさいので)高さ管理は行わない
+        # (計算量が増える＝面倒くさいので)高さ管理は行わない
         par = self.find(self.parent[x])
         self.parent[x] = par
         return par
 
     # xとyのグループを統合する
     def unite(self, x, y):
-        # それぞれの最上位の親に対する操作を行うことになる
+        # それぞれのリーダーに対する操作を行うことになる
         x = self.find(x)
         y = self.find(y)
 
-        # 木の高さが同じ→適当に繋ぎ、繋げられた方の高さを1増やす
+        # リーダーが同じなら何もする必要がない
+        if x == y:
+            return
+
+        # 木の高さが同じ場合：
+        # グループの人数を合計しつつ適当に繋ぎ、繋げられた方の高さを1増やす
         if self.rank[x] == self.rank[y]:
+            self.parent[x] += self.parent[y]
             self.parent[y] = x
             self.rank[x] += 1
         
         # 木の高さが違うなら、低い方を高い方につなぐ
         elif self.rank[x] > self.rank[y]:
+            self.parent[x] += self.parent[y]
             self.parent[y] = x
         else:
+            self.parent[y] += self.parent[x]
             self.parent[x] = y
+        
+        # 統合された場合、グループ数は1減る
+        self.group_count -= 1
     
     # xとyが同じグループかどうかを調べる
     def samep(self, x, y):
         return self.find(x) == self.find(y)
+
+    # xの所属するグループのメンバーをリストで返す
+    def get_group_member_list(self, x):
+        x = self.find(x)
+        return [i for i in range(self.N) if self.find(i) == x]
     
-    # 全てのグループの人数を辞書形式で返す
-    def get_groups(self):
-        g_dic = {}
-        for i in range(len(self.parent)):
-            p = self.find(i)
-            g_dic.setdefault(p, 0)
-            g_dic[p] += 1  
-        return g_dic
+    # xの所属するグループのメンバー数を返す
+    def get_group_member_count(self, x):
+        x = self.find(x)
+        return -self.parent[x]
+
+    # 全ての{リーダー:グループメンバー数}を辞書形式で返す
+    def get_all_groups(self):
+        return {idx:-n for idx, n in enumerate(self.parent) if n < 0}
