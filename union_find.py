@@ -1,12 +1,13 @@
-# Union_Findクラス
+# Union_Find（あるいはDisjoint Set Union）クラス
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 # なんにせよ分かりやすさ重視で……
 # parent:親要素管理リスト rank:木の高さ管理リスト
 # コンストラクタ(N):要素数NのUnion_Find木を作成
-# .find(x):最上位の親（グループリーダー）を探す
+# .find(x):xの最上位の親（グループリーダー）を返す
 # .unite(x, y):xとyのグループを統合する
 # .samep(x, y):xとyが同じグループかどうかを判定
+# .get_groups:全てのグループの人数を{リーダー:人数}の辞書形式で返す
 
 class Union_Find:
     # コンストラクタ。親管理リストと高さ管理リストを初期化し、
@@ -51,8 +52,8 @@ class Union_Find:
     # 全てのグループの人数を辞書形式で返す
     def get_groups(self):
         g_dic = {}
+        # リーダーを探して辞書上の人数を増やす、を全員分
         for i in range(len(self.parent)):
             p = self.find(i)
-            g_dic.setdefault(p, 0)
-            g_dic[p] += 1  
+            g_dic[p] = g_dic.setdefault(p, 0) + 1  
         return g_dic
