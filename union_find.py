@@ -2,7 +2,7 @@
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 # なんにせよ分かりやすさ重視で……
-# コンストラクタ(N):要素数NのUnion_Find木を作成
+# Union_Find(N):要素数NのUnion_Find木を作成
 # parent:親要素管理リスト
 # rank:木の高さ管理リスト
 # group_count:現在のグループ数
@@ -15,7 +15,7 @@
 # .get_all_groups():全てのリーダー:グループメンバー数を辞書形式で取得
 
 class Union_Find:
-    # コンストラクタ。親管理リストと高さ管理リストを初期化し、
+    # 親管理リストと高さ管理リストを初期化し、
     # 要素N個のUnion-Find森を作成する。
     # 親管理リストは、基本的には自分のひとつ上の親を表すが、
     # 値が負の場合には、自身が最上位の親（リーダー）であることを表し、
