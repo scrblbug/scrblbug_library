@@ -1,7 +1,7 @@
 # 区間加算クエリ用Binary Indexed Tree(フェニック木)クラス
 # とりあえず最低限動作するものを……
 class BITsum:
-    # コンストラクタ。1-indexedにするため、N+1の配列を作成し、0で初期化
+    # 1-indexedにするため、N+1の配列を作成し、0で初期化
     def __init__(self, N):
         self.tree = [0] * (N+1)
         self.N = N
