@@ -1,12 +1,12 @@
-# Union_Findクラス
+# Union_Findクラスfor Python3
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
-# なんにせよ分かりやすさ重視で……
+# なんにせよ分かりやすさ重視で……コメントは過剰につけています
 # Union_Find(N):要素数NのUnion_Find木を作成
-# parent:親要素管理リスト
-# rank:木の高さ管理リスト
-# group_count:現在のグループ数
-# N:全体の要素数
+# .parent:親要素管理リスト
+# .rank:木の高さ管理リスト
+# .group_count:現在のグループ数
+# .N:全体の要素数
 # .find(x):最上位の親(グループリーダー)を取得
 # .unite(x, y):xとyのグループを統合する
 # .samep(x, y):xとyが同じグループかどうかを判定
