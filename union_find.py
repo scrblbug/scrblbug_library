@@ -47,7 +47,7 @@ class Union_Find:
 
         # リーダーが同じなら何もする必要がない
         if x == y:
-            return
+            return False # 何もしてないので、一応Falseでも……
 
         # 木の高さが同じ場合：
         # グループの人数を合計しつつ適当に繋ぎ、繋げられた方の高さを1増やす
@@ -66,6 +66,7 @@ class Union_Find:
         
         # 統合された場合、グループ数は1減る
         self.group_count -= 1
+        return True
     
     # xとyが同じグループかどうかを調べる
     def samep(self, x, y):
@@ -86,7 +87,7 @@ class Union_Find:
         return {idx:-n for idx, n in enumerate(self.parent) if n < 0}
 
     # 全ての{リーダー:[メンバー一覧]}を辞書形式で返す
-    # これが欲しいだけならグラフ探索するほうが速いんじゃないかな……
+    # もしもこれが欲しいだけなら、グラフ探索するほうが速いんじゃないかな……
     def get_all_group_members(self):
         agm_dic = {}
         for i in range(self.N):
