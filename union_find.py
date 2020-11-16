@@ -11,9 +11,10 @@
 # .unite(x, y):xとyのグループを統合しつつ、(統合先リーダー, 統合元リーダー)を返す。
 #              (統合不要だった時は(-1, -1)が返る)
 # .samep(x, y):xとyが同じグループかどうかを判定
-# .get_group_member_list(x):xの所属するグループのメンバーをリストで取得
-# .get_group_member_count(x):xの所属するグループのメンバー数を取得
-# .get_all_groups():全てのリーダー:グループメンバー数を辞書形式で取得
+# .get_group_count(x):xの所属するグループのメンバー数を取得
+# .get_group_members(x):xの所属するグループのメンバーをリストで取得
+# .get_all_group_count():全てのリーダー:グループメンバー数を辞書形式で取得
+# .get_all_group_members():全てのリーダー:[メンバー一覧]を辞書形式で取得
 
 class Union_Find:
     # 親管理リストと高さ管理リストを初期化し、
@@ -47,7 +48,11 @@ class Union_Find:
 
         # リーダーが同じなら何もする必要がない
         if x == y:
+<<<<<<< HEAD
             return (-1, -1)
+=======
+            return False # 何もしてないので、一応Falseでも……
+>>>>>>> 06d1eb7f787a72bdd84a112163b03dab4f72307e
 
         # 木の高さが同じ場合：
         # グループの人数を合計しつつ適当に繋ぎ、繋げられた方の高さを1増やす
@@ -63,22 +68,35 @@ class Union_Find:
         self.parent[x] += self.parent[y]
         self.parent[y] = x
         self.group_count -= 1
+<<<<<<< HEAD
         return (x, y)
+=======
+        return True
+>>>>>>> 06d1eb7f787a72bdd84a112163b03dab4f72307e
     
     # xとyが同じグループかどうかを調べる
     def samep(self, x, y):
         return self.find(x) == self.find(y)
 
-    # xの所属するグループのメンバーをリストで返す
-    def get_group_member_list(self, x):
-        x = self.find(x)
-        return [i for i in range(self.N) if self.find(i) == x]
-    
     # xの所属するグループのメンバー数を返す
-    def get_group_member_count(self, x):
+    def get_group_count(self, x):
         x = self.find(x)
         return -self.parent[x]
 
+    # xの所属するグループのメンバーをリストで返す
+    def get_group_members(self, x):
+        x = self.find(x)
+        return [i for i in range(self.N) if self.find(i) == x]
+    
     # 全ての{リーダー:グループメンバー数}を辞書形式で返す
-    def get_all_groups(self):
+    def get_all_group_count(self):
         return {idx:-n for idx, n in enumerate(self.parent) if n < 0}
+
+    # 全ての{リーダー:[メンバー一覧]}を辞書形式で返す
+    # もしもこれが欲しいだけなら、グラフ探索するほうが速いんじゃないかな……
+    def get_all_group_members(self):
+        agm_dic = {}
+        for i in range(self.N):
+            agm_dic.setdefault(self.find(i), [])
+            agm_dic[self.find(i)].append(i)
+        return agm_dic
