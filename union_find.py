@@ -8,7 +8,8 @@
 # .group_count:現在のグループ数
 # .N:全体の要素数
 # .find(x):最上位の親(グループリーダー)を取得
-# .unite(x, y):xとyのグループを統合する
+# .unite(x, y):xとyのグループを統合しつつ、(統合先リーダー, 統合元リーダー)を返す。
+#              (統合不要だった時は(-1, -1)が返る)
 # .samep(x, y):xとyが同じグループかどうかを判定
 # .get_group_member_list(x):xの所属するグループのメンバーをリストで取得
 # .get_group_member_count(x):xの所属するグループのメンバー数を取得
@@ -46,7 +47,7 @@ class Union_Find:
 
         # リーダーが同じなら何もする必要がない
         if x == y:
-            return
+            return (-1, -1)
 
         # 木の高さが同じ場合：
         # グループの人数を合計しつつ適当に繋ぎ、繋げられた方の高さを1増やす
@@ -54,17 +55,15 @@ class Union_Find:
             self.parent[x] += self.parent[y]
             self.parent[y] = x
             self.rank[x] += 1
+            return (x, y)
         
         # 木の高さが違うなら、低い方を高い方につなぐ
-        elif self.rank[x] > self.rank[y]:
-            self.parent[x] += self.parent[y]
-            self.parent[y] = x
-        else:
-            self.parent[y] += self.parent[x]
-            self.parent[x] = y
-        
-        # 統合された場合、グループ数は1減る
+        if self.rank[x] < self.rank[y]:
+            x, y = y, x
+        self.parent[x] += self.parent[y]
+        self.parent[y] = x
         self.group_count -= 1
+        return (x, y)
     
     # xとyが同じグループかどうかを調べる
     def samep(self, x, y):
