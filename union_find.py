@@ -48,11 +48,7 @@ class Union_Find:
 
         # リーダーが同じなら何もする必要がない
         if x == y:
-<<<<<<< HEAD
             return (-1, -1)
-=======
-            return False # 何もしてないので、一応Falseでも……
->>>>>>> 06d1eb7f787a72bdd84a112163b03dab4f72307e
 
         # 木の高さが同じ場合：
         # グループの人数を合計しつつ適当に繋ぎ、繋げられた方の高さを1増やす
@@ -68,11 +64,7 @@ class Union_Find:
         self.parent[x] += self.parent[y]
         self.parent[y] = x
         self.group_count -= 1
-<<<<<<< HEAD
         return (x, y)
-=======
-        return True
->>>>>>> 06d1eb7f787a72bdd84a112163b03dab4f72307e
     
     # xとyが同じグループかどうかを調べる
     def samep(self, x, y):
