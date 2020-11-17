@@ -56,6 +56,7 @@ class Union_Find:
             self.parent[x] += self.parent[y]
             self.parent[y] = x
             self.rank[x] += 1
+            self.group_count -= 1
             return (x, y)
         
         # 木の高さが違うなら、低い方を高い方につなぐ
