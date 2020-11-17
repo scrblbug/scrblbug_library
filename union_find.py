@@ -8,8 +8,7 @@
 # .group_count:現在のグループ数
 # .N:全体の要素数
 # .find(x):最上位の親(グループリーダー)を取得
-# .unite(x, y):xとyのグループを統合しつつ、(統合先リーダー, 統合元リーダー)を返す。
-#              (統合不要だった時は(-1, -1)が返る)
+# .unite(x, y):xとyのグループを統合しつつ、(統合先リーダー, 統合元リーダー)or統合不要なら(-1, -1)を返す
 # .samep(x, y):xとyが同じグループかどうかを判定
 # .get_group_count(x):xの所属するグループのメンバー数を取得
 # .get_group_members(x):xの所属するグループのメンバーをリストで取得
@@ -27,7 +26,7 @@ class Union_Find:
         self.rank = [0] * N
         self.group_count = N
         self.N = N
-    
+
     # xの所属するグループのリーダーを返す
     def find(self, x):
         # 自分自身がリーダーなら、自分を返す
@@ -58,7 +57,7 @@ class Union_Find:
             self.rank[x] += 1
             self.group_count -= 1
             return (x, y)
-        
+
         # 木の高さが違うなら、低い方を高い方につなぐ
         if self.rank[x] < self.rank[y]:
             x, y = y, x
@@ -66,7 +65,7 @@ class Union_Find:
         self.parent[y] = x
         self.group_count -= 1
         return (x, y)
-    
+
     # xとyが同じグループかどうかを調べる
     def samep(self, x, y):
         return self.find(x) == self.find(y)
@@ -80,7 +79,7 @@ class Union_Find:
     def get_group_members(self, x):
         x = self.find(x)
         return [i for i in range(self.N) if self.find(i) == x]
-    
+
     # 全ての{リーダー:グループメンバー数}を辞書形式で返す
     def get_all_group_count(self):
         return {idx:-n for idx, n in enumerate(self.parent) if n < 0}
