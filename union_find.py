@@ -92,3 +92,38 @@ class Union_Find:
             agm_dic.setdefault(self.find(i), [])
             agm_dic[self.find(i)].append(i)
         return agm_dic
+
+# 以下はimmutableなオブジェクトをUnion_Findで扱う拡張クラス
+# 適当にでっち上げたのでコメント無し＆不具合が多いかも……
+class Union_Find_Objects(Union_Find):
+    def __init__(self):
+        super().__init__(0)
+        self.obj_to_idx = {}
+        self.idx_to_obj = []
+    
+    def obj_add(self, obj):
+        self.parent.append(-1)
+        self.rank.append(0)
+        self.idx_to_obj.append(obj)
+        self.obj_to_idx[obj] = self.N
+        self.N += 1
+        self.group_count += 1
+    
+    def obj_find(self, obj):
+        x = self.obj_to_idx[obj]
+        super().find(x)
+        return self.idx_to_obj[x]
+    
+    def obj_unite(self, obj_x, obj_y):
+        x = self.obj_to_idx[obj_x]
+        y = self.obj_to_idx[obj_y]
+        x, y = super().unite(x, y)
+        if x != -1:
+            return (self.idx_to_obj[x], self.idx_to_obj[y])
+        else:
+            return (-1, -1)
+    
+    def obj_samep(self, obj_x, obj_y):
+        x = self.obj_to_idx[obj_x]
+        y = self.obj_to_idx[obj_y]
+        return super().samep(x, y)
