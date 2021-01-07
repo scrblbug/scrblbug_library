@@ -96,11 +96,13 @@ class Union_Find:
 # 以下はimmutableなオブジェクトをUnion_Findで扱う拡張クラス
 # 適当にでっち上げたのでコメント無し＆不具合が多いかも……
 class Union_Find_Objects(Union_Find):
+    # 初期化は要素数0として行うので注意。
     def __init__(self):
         super().__init__(0)
         self.obj_to_idx = {}
         self.idx_to_obj = []
     
+    # 新規オブジェクトをUnion Findに独立要素として追加する
     def obj_add(self, obj):
         self.parent.append(-1)
         self.rank.append(0)
