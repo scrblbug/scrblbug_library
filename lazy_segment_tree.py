@@ -1,7 +1,14 @@
+# 書きかけ
 class Lazy_Segment_Tree:
-    def __init__(self, init_arg, op, ie, update_op, update_ie):
+    def __init__(self, init_arg, 
+                 op=lambda x,y:x+y, 
+                 ie=0, 
+                 reflect_op=lambda x,y,rng:x+y*rng, 
+                 update_op=lambda x,y:x+y, 
+                 update_ie=0):
         self.op = op
         self.ie = ie
+        self.refop = reflect_op
         self.udop = update_op
         self.udie = update_ie
 
@@ -59,7 +66,26 @@ class Lazy_Segment_Tree:
             result.append(left)
             left //= 2
         return result
-    
 
+    def update_value(self, x, left, right=None):
+        if right == None:
+            right = left + 1
+        to_be_updated = self.get_ud_index(left, right)
+        for idx in to_be_updated[::-1]:
+            self.propagate(idx)
 
+        for idx in self.generate_op_index(left, right):
+            self.udtree[idx] = self.udop(self.udtree[idx], x)
+            self.propagate(idx)
+        
+        for idx in to_be_updated:
+            self.tree[idx] = self.op(self.tree[idx * 2], self.tree[idx * 2 + 1])
 
+    def propagate(self, idx):
+        if self.udtree[idx] == self.udie:
+            return
+        self.tree[idx] = self.refop(self.tree[idx], self.udtree[idx], 2**(self.depth - idx.bit_length() + 1))
+        self.udtree[idx] = self.udie
+        if idx.bit_length() != self.depth + 1:
+            self.udtree[idx * 2] = self.udop(self.udtree[idx * 2], self.udtree[idx])
+            self.udtree[idx * 2 + 1] = self.udop(self.udtree[idx * 2 + 1], self.udtree[idx])
