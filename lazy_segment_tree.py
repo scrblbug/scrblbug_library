@@ -1,9 +1,9 @@
-# 書きかけ
+# 書きかけ（ちゃんと動かない）
 class Lazy_Segment_Tree:
     def __init__(self, init_arg, 
                  op=lambda x,y:x+y, 
                  ie=0, 
-                 reflect_op=lambda x,y,rng:x+y*rng, 
+                 reflect_op=lambda x,y,rng:x+y*rng, #rng:該当ノードでの要素数
                  update_op=lambda x,y:x+y, 
                  update_ie=0):
         self.op = op
@@ -35,8 +35,6 @@ class Lazy_Segment_Tree:
             self.tree[i] = self.op(self.tree[i * 2], self.tree[i * 2 + 1])
     
     def generate_op_index(self, left, right):
-        if not (0 <= left < right <= self.length):
-            raise IndexError(f'left:{left}, right:{right}, length:{self.length}')
         left += self.offset
         right += self.offset
         while left < right:
@@ -47,9 +45,7 @@ class Lazy_Segment_Tree:
             left = (left + 1) >> 1
             right = (right - 1) >> 1
 
-    def get_ud_index(self, left, right):
-        if not (0 <= left < right <= self.length):
-            raise IndexError(f'left:{left}, right:{right}, length:{self.length}')
+    def get_upper_index(self, left, right):
         left += self.offset
         right += self.offset
         left = left // ((left & -left) * 2)
@@ -68,20 +64,23 @@ class Lazy_Segment_Tree:
         return result
 
     def update_value(self, x, left, right=None):
+        if not (0 <= left < right <= self.length):
+            raise IndexError(f'left:{left}, right:{right}, length:{self.length}')
         if right == None:
             right = left + 1
-        to_be_updated = self.get_ud_index(left, right)
-        for idx in to_be_updated[::-1]:
-            self.propagate(idx)
+        upper_index = self.get_upper_index(left, right)
+        for idx in upper_index[::-1]:
+            self.eval_and_prop(idx)
 
         for idx in self.generate_op_index(left, right):
             self.udtree[idx] = self.udop(self.udtree[idx], x)
-            self.propagate(idx)
+            self.eval_and_prop(idx)
         
-        for idx in to_be_updated:
-            self.tree[idx] = self.op(self.tree[idx * 2], self.tree[idx * 2 + 1])
+        for idx in upper_index:
+            self.tree[idx] = self.op(self.eval_and_prop(self.tree[idx * 2]),
+                                     self.eval_and_prop(self.tree[idx * 2 + 1]))
 
-    def propagate(self, idx):
+    def eval_and_prop(self, idx):
         if self.udtree[idx] == self.udie:
             return
         self.tree[idx] = self.refop(self.tree[idx], self.udtree[idx], 2**(self.depth - idx.bit_length() + 1))
@@ -89,3 +88,16 @@ class Lazy_Segment_Tree:
         if idx.bit_length() != self.depth + 1:
             self.udtree[idx * 2] = self.udop(self.udtree[idx * 2], self.udtree[idx])
             self.udtree[idx * 2 + 1] = self.udop(self.udtree[idx * 2 + 1], self.udtree[idx])
+        return self.tree[idx]
+
+    def rangeq(self, left, right):
+        if not (0 <= left < right <= self.length):
+            raise IndexError(f'left:{left}, right:{right}, length:{self.length}')
+        upper_index = self.get_upper_index(left, right)
+        for i in upper_index[::-1]:
+            self.eval_and_prop(i)
+        result = self.ie
+        for i in self.generate_op_index(left, right):
+            result = self.op(result, self.eval_and_prop(i))
+        return result
+
