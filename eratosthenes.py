@@ -15,3 +15,25 @@ def get_prime_list(limit):
 
     # 最後に素数だけを取り出す
     return [p for p in range(limit + 1) if primep[p]==True]
+
+# エラトステネスの篩を使うが、2の倍数をあらかじめ除いておく
+def get_prime_list_ex(limit):
+    if limit < 2:
+        return []
+
+    # primep[n]==Trueのとき、(2 * n) + 1 が素数とする
+    primep = [True] * ((limit - 1) // 2 + 1)
+
+    primep[0] = False
+
+    # 少しややこしく見えるが、やっていることは同じ
+    # f.e. primep[3](=7)の場合、primep[10](=21), primep[17](=35)と
+    # 素数から除外されていくことになる
+    for n in range(1, int((limit ** 0.5) - 1) // 2 + 1):
+        if primep[n] == True:
+            p = 2 * n + 1
+            for i in range(n + p, len(primep), p):
+                primep[i] = False
+
+    # 2だけはしょうがないので最後に追加する
+    return [2] + [2 * p + 1 for p in range(len(primep)) if primep[p]==True]
