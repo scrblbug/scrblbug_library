@@ -1,4 +1,13 @@
+# エラトステネスの篩を用いて素数列を作成する関数
+# 書いた人：scrblbug
+# サイトURL: http://miaoued.net Twitter: @scrblbug
+# get_prime_list: 素朴な実装
+# get_prime_list_ex, ex2: 奇数のみを走査する版
+# 実行速度は概ね ex > ex2 > normal
+# function(limit): 上限limitまでの素数を列挙したリストを返す
+
 # エラトステネスの篩を使い、上限limitまでの素数列を取得する
+# もっとも素朴な実装
 def get_prime_list(limit):
     # nが素数なら、primep[n]==Trueとする配列を準備
     primep = [True] * (limit + 1)
