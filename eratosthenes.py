@@ -47,7 +47,7 @@ def get_prime_list_ex(limit):
     # 2だけはしょうがないので最後に追加する
     return [2] + [2 * p + 1 for p in range(len(primep)) if primep[p]==True]
 
-# エラトステネスの篩を使うが、2の倍数をあらかじめ除いておく
+# エラトステネスの篩を使うが、2の倍数をあらかじめ除いておく（見通し良い版）
 def get_prime_list_ex2(limit):
     if limit < 2:
         return []
