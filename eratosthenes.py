@@ -37,3 +37,17 @@ def get_prime_list_ex(limit):
 
     # 2だけはしょうがないので最後に追加する
     return [2] + [2 * p + 1 for p in range(len(primep)) if primep[p]==True]
+
+# エラトステネスの篩を使うが、2の倍数をあらかじめ除いておく
+def get_prime_list_ex2(limit):
+    if limit < 2:
+        return []
+    primep = [True] * (limit+1)
+
+    # 3以上の奇数のみを順番に見ていく
+    for n in range(3, int(limit ** 0.5) + 1 , 2):
+        if primep[n] == True:
+            # 素数の奇数倍のみ書き換えすればOK
+            for i in range(n * 3, limit + 1, n * 2):
+                primep[i] = False
+    return [2] + [p for p in range(3, limit+1, 2) if primep[p]==True]
