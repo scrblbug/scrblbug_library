@@ -1,4 +1,5 @@
 # 動作はするが遅い
+# 後日改善予定
 class Lazy_Segment_Tree:
     def __init__(self, init_arg, 
                  op=lambda x,y:x+y, 
