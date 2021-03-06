@@ -50,6 +50,7 @@ class Weighted_Union_Find:
                 return (-1, -1)
     
         lx_to_ly = self.weight[x] - self.weight[y] + w
+        self.group_count -= 1
 
         # 同じ高さのときは、とりあえず x の下に y をつけ、高さを更新
         if self.rank[lx] == self.rank[ly]:
