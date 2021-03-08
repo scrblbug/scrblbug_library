@@ -44,7 +44,7 @@ class Weighted_Union_Find:
         # そもそも同じグループにいる場合、何もしない
         if lx == ly:
             # が、値が矛盾する場合はエラーを返す
-            if self.get_diff(x, y) != w:
+            if self.weight[y] - self.weight[x] != w:
                 raise ValueError ('value contradiction detected')
             else:
                 return (-1, -1)
