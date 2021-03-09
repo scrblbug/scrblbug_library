@@ -12,8 +12,8 @@ def gcd_by_ex_ea(a, b):
 # a, p, b, q が与えられた時、
 # x = a (mod p) = b (mod q)
 # であるような x を求める。
-# 文章で書くと、a で割って p 余り、b で割って q 余るような数を
-# 求める、ということになる。
+# 文章で書くと、a で割って p 余り、b で割って q 余るような
+# 数を求める、ということになる。
 
 # 前提条件としては、d = gcd(p, q) としたとき、
 # a = b (mod d) 
@@ -29,10 +29,11 @@ def gcd_by_ex_ea(a, b):
 # x = a + psy = a (mod p)
 # x = b - qsz = b (mod q)
 # であるため、これが求める数字となる。
+# x は lcm(p, q) 周期で現れるので、最後にこの剰余を取る
 
 def crt(a, p, b, q):
     y, z, d = gcd_by_ex_ea(p, q)
     if a % d != b % d:
         return None
     s = (b - a) // d
-    return a + p * s * y
+    return (a + p * s * y) % (p * q // d)
