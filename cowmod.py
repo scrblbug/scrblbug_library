@@ -1,6 +1,6 @@
 # 順列や組み合わせの通り数をMODで求めるのに楽をしたいクラス
 # MOD付きで初期化して使用する - COmbination With MOD
-class Cowmod_tools:
+class Cowmod:
     def __init__(self, MOD=10**9+7):
         self._fact = [1, 1]
         self._inv = [1, 1]
