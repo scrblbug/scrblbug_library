@@ -10,6 +10,12 @@ def gcd_by_ea(a, b):
         return b
     return gcd_by_ea(b, a % b)
 
+# 再帰無しの場合
+def gcd_by_ea_without_recursion(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
 # gcd_by_ex_ea(a, b)
 # a, b 二つの数が与えられた時、拡張ユークリッドの互除法を用いて
 # ax + by = gcd(a, b) となる x, y, gcd(a, b) を求める。
