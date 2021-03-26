@@ -8,19 +8,19 @@ class Cowmod:
         self._MOD = MOD
 
     def extend_fact(self, N):
-        if len(self._fact) < N+1:
+        if len(self._fact) > N+1:
             return
         for i in range(len(self._fact), N+1):
             self._fact.append((i * self._fact[-1]) % self._MOD)
 
     def extend_inv(self, N):
-        if len(self._inv) < N+1:
+        if len(self._inv) > N+1:
             return
         for i in range(len(self._inv), N+1):
             self._inv.append((-self._inv[self._MOD % i] * (self._MOD // i)) % self._MOD)
 
     def extend_inv_fact(self, N):
-        if len(self._inv_fact) < N+1:
+        if len(self._inv_fact) > N+1:
             return
         self.extend_inv(N)
         for i in range(len(self._inv_fact), N+1):
