@@ -1,3 +1,10 @@
+# 素因数分解 in Python3
+# 書いた人: scrblbug
+# サイトURL: http://miaoued.net Twitter: @scrblbug
+
+# 素因数分解用ライブラリ
+# 特に早くはないので注意。
+
 # エラトステネスの篩
 def get_prime_list(limit):
     if limit < 2:

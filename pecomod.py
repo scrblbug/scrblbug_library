@@ -1,3 +1,7 @@
+# MOD付き順列組み合わせ用ライブラリ in Python3
+# 書いた人: scrblbug
+# サイトURL: http://miaoued.net Twitter: @scrblbug
+
 # 順列や組み合わせの通り数をMODで求める時に楽をしたいクラス
 # PErmutation and COmbination with MOD
 # Pecomod(MOD) にてMOD付きで初期化

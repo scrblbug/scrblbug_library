@@ -1,4 +1,4 @@
-# ユークリッドの互除法 in Python3
+# ユークリッドの互除法・拡張ユークリッドの互除法 in Python3
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 
