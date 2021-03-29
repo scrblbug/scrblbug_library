@@ -8,18 +8,21 @@ class Pecomod:
         self._inv_fact = [1, 1]
         self._MOD = MOD
 
+    # 必要に応じて階乗リストを拡張する
     def _extend_fact(self, N):
         if len(self._fact) > N+1:
             return
         for i in range(len(self._fact), N+1):
             self._fact.append((i * self._fact[-1]) % self._MOD)
 
+    # 必要に応じて逆元リストを拡張する
     def _extend_inv(self, N):
         if len(self._inv) > N+1:
             return
         for i in range(len(self._inv), N+1):
             self._inv.append((-self._inv[self._MOD % i] * (self._MOD // i)) % self._MOD)
 
+    # 必要に応じて逆元の階乗リストを拡張する
     def _extend_inv_fact(self, N):
         if len(self._inv_fact) > N+1:
             return
@@ -49,4 +52,3 @@ class Pecomod:
     # n 種類のものから重複ありで r 個選ぶ組み合わせ数を計算
     def calc_comb_with_repeat(self, n, r):
         return (self.fact(n+r-1) * self.inv_fact(n-1) * self.inv_fact(r)) % self._MOD
-
