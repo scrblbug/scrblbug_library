@@ -15,8 +15,9 @@ def get_prime_list(limit):
 # 素因数分解
 # 素数列挙を行った後、それをもとに素因数分解を行い、
 # (素数, 指数) のリストを返す
-def prime_factorization(n):
-    primes = get_prime_list(int(n**0.5))
+def prime_factorization(n, primes=[]):
+    if not primes or primes[-1] < int(n**0.5):
+        primes = get_prime_list(int(n**0.5))
     result = []
     for p in primes:
         if p >= n:
