@@ -48,5 +48,5 @@ class Pecomod:
 
     # n 種類のものから重複ありで r 個選ぶ組み合わせ数を計算
     def calc_comb_with_repeat(self, n, r):
-        return (self.fact(n+r-1) * self.inv_fact(n) * self.inv_fact(r)) % self._MOD
+        return (self.fact(n+r-1) * self.inv_fact(n-1) * self.inv_fact(r)) % self._MOD
 
