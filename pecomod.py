@@ -3,8 +3,9 @@
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 
 # 順列や組み合わせの通り数をMODで求める時に楽をしたいクラス
+# そんなに速くはない……むしろ遅いので注意
 # PErmutation and COmbination with MOD
-# Pecomod(MOD) にてMOD付きで初期化
+# Pecomod(MOD) にてMOD付きで初期化、MOD初期値は10**9+7
 class Pecomod:
     def __init__(self, MOD=10**9+7):
         self._fact = [1, 1]
