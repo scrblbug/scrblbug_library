@@ -50,9 +50,13 @@ class Pecomod:
         self._extend_inv_fact(N)
         return self._inv_fact[N]
 
-    # n 個から r 個選ぶ組み合わせ数を計算
+    # n 個から順序に関係なく r 個選ぶ組み合わせ数を計算
     def calc_comb(self, n, r):
         return (self.fact(n) * self.inv_fact(n-r) * self.inv_fact(r)) % self._MOD
+
+    # n 個から順序付きで r 個選ぶ組み合わせ数を計算
+    def calc_perm(self, n, r):
+        return (self.fact(n) * self.inv_fact(n-r)) % self._MOD
 
     # n 種類のものから重複ありで r 個選ぶ組み合わせ数を計算
     def calc_comb_with_repeat(self, n, r):
