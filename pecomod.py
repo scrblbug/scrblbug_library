@@ -7,11 +7,14 @@
 # PErmutation and COmbination with MOD
 # Pecomod(MOD) にてMOD付きで初期化、MOD初期値は10**9+7
 class Pecomod:
-    def __init__(self, MOD=10**9+7):
+    def __init__(self, MOD=10**9+7, range_f=2, range_i=2, range_if=2):
         self._fact = [1, 1]
         self._inv = [1, 1]
         self._inv_fact = [1, 1]
         self._MOD = MOD
+        self._extend_fact(range_f)
+        self._extend_inv(range_i)
+        self._extend_inv_fact(range_if)
 
     # 必要に応じて階乗リストを拡張する
     def _extend_fact(self, N):
@@ -52,7 +55,7 @@ class Pecomod:
 
     # n 個から順序に関係なく r 個選ぶ組み合わせ数を計算
     def calc_comb(self, n, r):
-        return (self.fact(n) * self.inv_fact(n-r) * self.inv_fact(r)) % self._MOD
+        return (((self.fact(n) * self.inv_fact(n-r)) % self._MOD) * self.inv_fact(r)) % self._MOD
 
     # n 個から順序付きで r 個選ぶ組み合わせ数を計算
     def calc_perm(self, n, r):
@@ -60,4 +63,4 @@ class Pecomod:
 
     # n 種類のものから重複ありで r 個選ぶ組み合わせ数を計算
     def calc_comb_with_repeat(self, n, r):
-        return (self.fact(n+r-1) * self.inv_fact(n-1) * self.inv_fact(r)) % self._MOD
+        return (((self.fact(n+r-1) * self.inv_fact(n-1)) % self._MOD) * self.inv_fact(r)) % self._MOD
