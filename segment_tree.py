@@ -1,4 +1,4 @@
-# セグメント木のクラス
+# Segment_Treeクラス in Python3
 # 書いた人：scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 # とりあえず基本的なところだけを分かりやすい形で組んでみたもの

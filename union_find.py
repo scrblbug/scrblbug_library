@@ -1,4 +1,4 @@
-# Union_Findクラスfor Python3
+# Union_Findクラス in Python3
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 # なんにせよ分かりやすさ重視で……コメントは過剰につけています
