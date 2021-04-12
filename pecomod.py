@@ -7,6 +7,8 @@
 # 順列や組み合わせの通り数をMODで求める時に楽をしたいクラス
 # そんなに速くはない……初期値をきちんと設定しないとむしろ遅いので注意
 # 逆に、計算の確認程度ならMOD以外の初期値設定無しで気軽に呼び出してOK
+# 気軽な初期化: peco = Pecomod(MOD)
+# それなりな初期化: peco = Pecomod(MOD, N, N, N, False)
 class Pecomod:
     def __init__(self, MOD=10**9+7, range_f=2, range_i=2, range_if=2, auto_extend=True):
         self._fact = [1, 1]
