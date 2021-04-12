@@ -2,12 +2,13 @@
 # 書いた人: scrblbug
 # サイトURL: http://miaoued.net Twitter: @scrblbug
 
-# 順列や組み合わせの通り数をMODで求める時に楽をしたいクラス
-# そんなに速くはない……むしろ遅いので注意
 # PErmutation and COmbination with MOD
-# Pecomod(MOD) にてMOD付きで初期化、MOD初期値は10**9+7
+# Pecomod(MOD, fact範囲, inv範囲, inv_fact範囲, 自動拡張=False) にて初期化
+# 順列や組み合わせの通り数をMODで求める時に楽をしたいクラス
+# そんなに速くはない……初期値をきちんと設定しないとむしろ遅いので注意
+# 逆に、計算の確認程度ならMOD以外の初期値設定無しで気軽に呼び出してOK
 class Pecomod:
-    def __init__(self, MOD=10**9+7, range_f=2, range_i=2, range_if=2):
+    def __init__(self, MOD=10**9+7, range_f=2, range_i=2, range_if=2, auto_extend=True):
         self._fact = [1, 1]
         self._inv = [1, 1]
         self._inv_fact = [1, 1]
@@ -15,6 +16,7 @@ class Pecomod:
         self._extend_fact(range_f)
         self._extend_inv(range_i)
         self._extend_inv_fact(range_if)
+        self._auto_extend = auto_extend
 
     # 必要に応じて階乗リストを拡張する
     def _extend_fact(self, N):
@@ -40,17 +42,20 @@ class Pecomod:
 
     # N!を取得
     def fact(self, N):
-        self._extend_fact(N)
+        if self._auto_extend:
+            self._extend_fact(N)
         return self._fact[N]
 
     # Nの逆元を取得
     def inv(self, N):
-        self._extend_inv(N)
+        if self._auto_extend:
+            self._extend_inv(N)
         return self._inv[N]
 
     # Nの逆元の階乗を取得
     def inv_fact(self, N):
-        self._extend_inv_fact(N)
+        if self._auto_extend:
+            self._extend_inv_fact(N)
         return self._inv_fact[N]
 
     # n 個から順序に関係なく r 個選ぶ組み合わせ数を計算
