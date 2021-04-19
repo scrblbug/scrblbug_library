@@ -7,21 +7,27 @@ class Network_Flow:
     def __init__(self, N):
         self.N = N
         self.edges = [defaultdict(int) for _ in range(N)]
+        self.rev_edges = [defaultdict(int) for _ in range(N)]
+        self.INF = 10**18
+        self.caps = []
+
+    def prepare_caps(self):
+        self.caps = deepcopy(self.edges)
 
     def add_edge(self, frm, to, cap):
         self.edges[frm][to] += cap
+        self.rev_edges[to][frm] += cap
+
+    def add_flow(self, frm, to, vol):
+        self.caps[frm][to] -= vol
+        self.caps[to][frm] += vol
+        if to in self.caps[frm] and self.caps[frm][to] == 0:
+            del self.caps[frm][to]
+        if frm in self.caps[to] and self.caps[to][frm] == 0:
+            del self.caps[to][frm]
 
     def ford_fulkerson(self, start, goal):
-        self.caps = deepcopy(self.edges)
-
-        def add_flow(frm, to, vol):
-            self.caps[frm][to] -= vol
-            self.caps[to][frm] += vol
-            if to in self.caps[frm] and self.caps[frm][to] == 0:
-                del self.caps[frm][to]
-            if frm in self.caps[to] and self.caps[to][frm] == 0:
-                del self.caps[to][frm]
-
+        self.prepare_caps()
         def find_stream(start, goal):
             route = []
             visited = set()
@@ -48,8 +54,9 @@ class Network_Flow:
                 rt = stream
                 vol = min(self.caps[rt[i]][rt[i+1]] for i in range(len(rt)-1))
                 for i in range(len(rt)-1):
-                    add_flow(rt[i], rt[i+1], vol)
+                    self.add_flow(rt[i], rt[i+1], vol)
                 result += vol
             else:
                 break
         return result
+
