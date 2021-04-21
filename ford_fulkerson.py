@@ -17,7 +17,7 @@ class Ford_Fulkerson:
 
     # 残余グラフに辺を張る
     def add_edge(self, u, v, cap):
-        if cap == 0:
+        if cap == 0 or u == v:
             return
         if v not in self._caps[u]:
             self._caps[u][v] = 0
