@@ -68,7 +68,7 @@ class Dinic:
                     result += max_flow
 
             for nxt in self._rev_paths[now]:
-                if self._dist[nxt] >= self._dist[now] or self._caps[nxt].setdefault(now, 0) == 0:
+                if self._dist[nxt] >= self._dist[now] or now not in self._caps[nxt]:
                     continue
                 queue.append(nxt)
         return result
