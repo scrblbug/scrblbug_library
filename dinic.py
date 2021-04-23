@@ -46,6 +46,7 @@ class Dinic:
             return True
 
     # bfsで構築したルートに従い、流せるだけ流す
+    ######## 改善の余地あり！！ ########
     def _plan_flow(self, source, sink):
         result = 0
         order = [0] * (self._dist[sink] + 1)
@@ -59,9 +60,12 @@ class Dinic:
                 for u, v in zip(order[:-1], order[1:]):
                     if self._caps[u][v] < max_flow:
                         max_flow = self._caps[u][v]
-                for u, v in zip(order[:-1], order[1:]):
-                    self._flow(u, v, max_flow)
-                result += max_flow
+                        if max_flow == 0:
+                            break
+                else:
+                    for u, v in zip(order[:-1], order[1:]):
+                        self._flow(u, v, max_flow)
+                    result += max_flow
 
             for nxt in self._rev_paths[now]:
                 if self._dist[nxt] >= self._dist[now] or self._caps[nxt].setdefault(now, 0) == 0:
