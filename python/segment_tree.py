@@ -14,13 +14,11 @@
 # .rangeq(left, right):半開放区間[left, right)での演算結果を取得
 # .allq():全領域での演算結果を取得する。
 
-import math     # 演算内容、単位元の必要に応じて(初期化参照)
-
 class Segment_Tree:
     # リストもしくは要素数にて初期化を行う。
     # デフォルトでは最小値を求めるが、op(operation=演算内容、デフォルトはmin的関数)、
     # ie(identity element単位元)を指定することも可能(f.e: op=operator.add, ie=0)
-    def __init__(self, arg1, op=lambda x, y:x if x < y else y, ie=math.inf):
+    def __init__(self, arg1, op=lambda x, y:x if x < y else y, ie=float('inf')):
         self.op = op
         self.ie = ie
 
