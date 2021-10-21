@@ -69,16 +69,25 @@ class deque {
         return this.insertRight(this.root, value);
     }
 
+    // 参照ノードを削除し、その値を返す
+    pop_ref(ref) {
+        if (ref === this.root) {
+            return undefined;
+        } else {
+            ref.right.left = ref.left;
+            ref.left.right = ref.right;
+            this.length -= 1;
+            return ref.value;
+        }
+    }
+
     // 右端の要素を削除し、その値を返す
     pop() {
         if (this.length === 0) {
             return undefined;
         } else {
-            const result = this.root.left.value;
-            this.root.left.left.right = this.root;
-            this.root.left = this.root.left.left;
-            this.length -= 1;
-            return result;
+            const ref = this.root.left;
+            return this.pop_ref(ref);
         }
     }
 
@@ -87,11 +96,8 @@ class deque {
         if (this.length === 0) {
             return undefined;
         } else {
-            const result = this.root.right.value;
-            this.root.right.right.left = this.root;
-            this.root.right = this.root.right.right;
-            this.length -= 1;
-            return result;
+            const ref = this.root.right;
+            return this.pop_ref(ref);
         }
     }
 
