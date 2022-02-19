@@ -86,4 +86,4 @@ class Ford_Fulkerson:
             for u, v in zip(route[1:], route[:-1]):
                 self._make_flow(u, v, volume)
 
-        return result
+        return [result, self._caps]
