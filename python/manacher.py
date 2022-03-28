@@ -1,8 +1,14 @@
 # Manacher's Algorithm を用いて、
 # 与えられた文字列の連続部分文字列で
-# 回文となる最長のものを返す。
+# 回文となる最長のもの、
+# もしくは return_rad = True で
+# 区切り文字を含めた（注意！）各文字の回文半径を返す。
 
-def manacher(s, border='$'):
+# 考え方の肝は、長回文の中に短回文が含まれている場合、
+# その短回文は長回文の反対側にもあるはずなので、その分の
+# 探索を省くことが可能……みたいな感じ（伝われ！
+
+def manacher(s, border='$', return_rad=False):
     # 区切り文字を挿入しておく
     s = [c for a, b in zip([border] * len(s), s) for c in (a, b)] + [border]
     N = len(s)
@@ -27,12 +33,17 @@ def manacher(s, border='$'):
         # 回文を広げる
         while i+k+1 < N and i-k-1 >= 0 and s[i+k+1] == s[i-k-1]:
             k += 1
-
         rad[i] = k
+
+        # 最大値更新
         if k > maxr:
             maxi, maxr = i, k
 
+        # 右端を含む回文の更新
         if i + k > r:
             c, r = i, k
 
-    return ''.join(c for c in s[maxi-maxr:maxi+maxr+1] if c != border)
+    if return_rad:
+        return rad
+    else:
+        return ''.join(c for c in s[maxi-maxr:maxi+maxr+1] if c != border)
