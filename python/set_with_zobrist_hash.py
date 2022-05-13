@@ -4,52 +4,52 @@
 # 生成・保持しておくためのクラス
 from random import Random
 class Zobrist_Bits_Generator:
-    def __init__(this, seed=42):
-        this._value_to_bits = dict()
-        this._bits_set = set()
-        this.random = Random().seed(seed)
+    def __init__(self, seed=42):
+        self._value_to_bits = dict()
+        self._bits_set = set()
+        self.random = Random().seed(seed)
 
-    def get_bits(this, value):
-        if value in this._value_to_bits:
-            return this._value_to_bits[value]
+    def get_bits(self, value):
+        if value in self._value_to_bits:
+            return self._value_to_bits[value]
         else:
             while True:
-                _bits = this.random.randint(0, 1<<63-1)
-                if _bits in this._bits_set:
+                _bits = self.random.randint(0, (1<<63)-1)
+                if _bits in self._bits_set:
                     continue
-                this._value_to_bits[value] = _bits
-                this._bits_set.add(_bits)
+                self._value_to_bits[value] = _bits
+                self._bits_set.add(_bits)
                 return _bits
 
 # 本体。
 # 上記の Zobrist_Bits_Generator を引き渡して作成する。
-class Set_with_Zobrist_Hash:
-    def __init__(this, bits_gen):
-        this._set = set()
-        this._bits_gen = bits_gen
-        this.hash = 0
+class Set_with_Bits:
+    def __init__(self, bits_gen):
+        self._set = set()
+        self._bits_gen = bits_gen
+        self.hash = 0
 
-    def add(this, value):
-        if value in this._set:
-            return (this.hash, this.len)
+    def add(self, value):
+        if value in self._set:
+            return (self.hash, self.len)
         else:
-            _bits = this._bits_gen.get_bits(value)
-            this._set.add(value)
-            this.hash = this.hash ^ _bits
-            return (this.hash, this.len)
+            _bits = self._bits_gen.get_bits(value)
+            self._set.add(value)
+            self.hash = self.hash ^ _bits
+            return (self.hash, self.len)
     
-    def remove(this, value):
-        if value not in this._set:
+    def remove(self, value):
+        if value not in self._set:
             raise ValueError("The value is not in the set")
         
-        _bits = this._bits_gen.get_bits(value)
-        this._set.remove(value)
-        this.hash = this.hash ^ _bits
-        return (this.hash, this.len)
+        _bits = self._bits_gen.get_bits(value)
+        self._set.remove(value)
+        self.hash = self.hash ^ _bits
+        return (self.hash, self.len)
     
-    def has(this, value):
-        return value in this._set
+    def has(self, value):
+        return value in self._set
     
     @property
-    def len(this):
-        return len(this._set)
+    def len(self):
+        return len(self._set)
