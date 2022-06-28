@@ -40,7 +40,10 @@ def z_algorithm(S):
         # もしも Z の値が 0 でないならばデータを流用できるので、
         # 該当するところをコピーする
         # ただし、ext 文字より多くは利用できないので注意
+
+        # 繰り返しが期待される地点
         rep = 1
+
         while now + rep < len(S) and rep + Z[rep] < ext:
             Z[now+rep] = Z[rep]
             rep += 1
@@ -57,9 +60,3 @@ def z_algorithm(S):
         ext -= rep
 
     return Z
-
-def main():
-    S = input()
-    print(*z_algorithm(S))
-
-main()
