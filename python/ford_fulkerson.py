@@ -7,7 +7,8 @@
 
 # Ford_Fulkerson(N): 頂点数Nで初期化
 # .add_edge(u, v, cap): 頂点u → v に容量capの辺を張る
-# .get_max_flow(source, sink): source → sinkの最大流量を求める
+# .get_max_flow(source, sink): source → sinkの最大流量を求め、
+#                              [最大流量, 残余グラフ] を返す
 
 class Ford_Fulkerson:
     def __init__(self, N):
