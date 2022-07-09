@@ -10,7 +10,7 @@ def popcount(value):
     value = (value + (value >> 4)) & 0x0f0f0f0f0f0f0f0f
 
     # これ以降は8桁確保されているので
-    # シンプルに足し合わせてOK
+    # シンプルに足し合わせて最後にビットマスクでOK
     value = value + (value >> 8)
     value = value + (value >> 16)
     value = value + (value >> 32)
